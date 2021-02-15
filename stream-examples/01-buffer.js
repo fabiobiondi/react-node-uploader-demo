@@ -1,8 +1,10 @@
+// Buffers are an abstraction that allows us to deal with raw binary data
+
 import buffer from 'buffer'
 import { readFileSync } from 'fs'
 import { join } from 'desm'
 
-// create a buffer with raw data in node.js
+// Let's create some buffers with some data
 const bufferFromString = Buffer.from('Ciao Fabio')
 const bufferFromByteArray = Buffer.from([67, 105, 97, 111, 32, 70, 97, 98, 105, 111])
 const bufferFromHex = Buffer.from('4369616f20466162696f', 'hex')

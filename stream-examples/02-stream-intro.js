@@ -7,12 +7,12 @@ import { createReadStream } from 'fs'
 import { join } from 'desm'
 
 // createReadStream creates a "readable" stream from a file
-const fileStream = createReadStream(join(import.meta.url, 'the-matrix.mp4'))
+const readFileStream = createReadStream(join(import.meta.url, 'the-matrix.mp4'))
 let numChunks = 0
 let totalBytes = 0
 
 // stream objects expose an event-based api
-fileStream
+readFileStream
   // when a new "chunk" has arrived
   .on('data', (chunk) => {
     console.log(chunk)
@@ -23,5 +23,10 @@ fileStream
   .on('end', () => {
     console.log(`Read ${totalBytes} bytes in ${numChunks} chunks`)
   })
-  // there was an error
-  .on('error', (err) => console.log(`Whoops... ${err}`))
+  // in case there is an error, we can handle it
+  .on('error', (err) => {
+    console.log(`Whoops... ${err}`)
+    readFileStream.destroy()
+  })
+
+// Again, this was a "readable" stream: it allows us to read data from a source
