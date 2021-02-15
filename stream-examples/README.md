@@ -17,3 +17,4 @@ npm install
   - **Piping streams** ([`04-copy-file.js`](./04-copy-file.js))
   - **Transform streams** ([`05-copy-gzip.js`](./05-copy-gzip.js))
   - **Dummy HTTP server** ([`06-http-dummy.js`](./06-http-dummy.js))
+  - **Parse HTTP multipart data (file uploads)** ([`07-http-multipart.js`](./07-http-multipart.js))
