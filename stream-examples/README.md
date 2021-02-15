@@ -16,5 +16,4 @@ npm install
   - **Writable streams** ([`03-writable-stream.js`](./03-writable-stream.js))
   - **Piping streams** ([`04-copy-file.js`](./04-copy-file.js))
   - **Transform streams** ([`05-copy-gzip.js`](./05-copy-gzip.js))
-  - TODO: http example
-  - TODO: show a file upload example logging the output (1px gif to keep it readable)
+  - **Dummy HTTP server** ([`06-http-dummy.js`](./06-http-dummy.js))
