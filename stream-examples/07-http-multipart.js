@@ -20,8 +20,11 @@ const server = createServer((req, res) => {
     // if all went well, prints the received files and fields
     console.log({ fields, files })
 
+    // here is tipically where you would process the files (e.g. create thumbnails, move the files around, etc.)
+
+    // Sends a successful response to the client
     res.writeHead(200, { 'content-type': 'application/json' })
-    res.end(JSON.stringify({ message: 'All data received and stored, thanks!' }))
+    res.end(JSON.stringify({ message: 'YAY! All data received and stored, thanks!' }))
   })
 })
 
