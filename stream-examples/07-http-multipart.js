@@ -13,7 +13,8 @@ const server = createServer((req, res) => {
   })
 
   // We can parse the current request.
-  // This will return a set of fields and files (or an error)
+  // This will return a set of fields and files (or an error).
+  // By default, every file is saved in the tmp folder.
   form.parse(req, (err, fields, files) => {
     // handle possible errors in parsing the received data
     // including validation rules
