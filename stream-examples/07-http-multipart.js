@@ -1,13 +1,19 @@
 import { createServer } from 'http'
+// formidable is an external library (`npm i --save formidable`) that can be used to parse
+// multipart requests in a streaming fashion.
 import formidable from 'formidable'
 
 const server = createServer((req, res) => {
+  // You can create a new formidable instance and configure it.
+  // In this case we are limiting every file to be a max of 10 MB.
   const form = formidable({
     maxFileSize: 1024 * 1024 * 10, // 10 MB
     maxFieldsSize: 1024 * 1024 * 10, // 10 MB
     hash: 'md5'
   })
 
+  // We can parse the current request.
+  // This will return a set of fields and files (or an error)
   form.parse(req, (err, fields, files) => {
     // handle possible errors in parsing the received data
     // including validation rules
@@ -29,3 +35,6 @@ const server = createServer((req, res) => {
 })
 
 server.listen(8000, () => console.log('Server started at http://localhost:8000'))
+
+// You can do a lot more stuff with formidable. If you are curious check out the official documentation:
+// https://www.npmjs.com/package/formidable
