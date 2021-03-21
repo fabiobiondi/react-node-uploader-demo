@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "desm": "^1.1.0",
-    "formidable": "^1.2.2"
+    "formidable": "^1.2.2",
+    "mime-types": "^2.1.29"
   }
 }

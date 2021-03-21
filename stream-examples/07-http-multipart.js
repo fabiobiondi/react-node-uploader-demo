@@ -1,9 +1,24 @@
 import { createServer } from 'http'
+import { rename } from 'fs'
 // formidable is an external library (`npm i --save formidable`) that can be used to parse
 // multipart requests in a streaming fashion.
 import formidable from 'formidable'
+// allows us to choose the extension of a file from its mime type
+import mime from 'mime-types'
+import { join } from 'desm'
 
 const server = createServer((req, res) => {
+  // ADDS support for CORS to simplify interactions with the frontend.
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Request-Method', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET')
+  res.setHeader('Access-Control-Allow-Headers', '*')
+  if (req.method === 'OPTIONS') {
+    res.writeHead(200)
+    return res.end()
+  }
+  // END CORS
+
   // You can create a new formidable instance and configure it.
   // In this case we are limiting every file to be a max of 10 MB.
   const form = formidable({
@@ -24,10 +39,22 @@ const server = createServer((req, res) => {
       return res.end(JSON.stringify({ error: err.message }))
     }
 
-    // if all went well, prints the received files and fields
-    console.log({ fields, files })
+    // here is tipically where you would VALIDATE and process the files (e.g. create thumbnails, move the files around, etc.)
+    // For now we just copy the files in a local folder and give them a name based on their hash and extension
+    for (const file of Object.values(files)) {
+      const extension = mime.extension(file.type)
+      const destFilename = `${file.hash}.${extension}`
+      const destPath = join(import.meta.url, 'uploads', destFilename)
+      rename(file.path, destPath, (err) => {
+        if (err) {
+          console.error(`Failed to move ${file.path} to ${destPath}: ${err.message}`)
+        }
+      })
+      file.path = destPath
+    }
 
-    // here is tipically where you would process the files (e.g. create thumbnails, move the files around, etc.)
+    // Finally we print the received files and fields
+    console.log({ fields, files })
 
     // Sends a successful response to the client
     res.writeHead(200, { 'content-type': 'application/json' })
