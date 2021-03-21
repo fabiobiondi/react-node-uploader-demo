@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Super minimal upload form</title>
+    <!-- 
+      
+      THIS IS A SUPER MINIMAL UPLOAD FORM IN VANILLA JAVASCRIPT
+      
+      You could run this with:
+
+      ```
+      npx http-server .
+      ```
+
+      And then access it on http://localhost:8080
+     -->
+  </head>
+  <body>
+    <form id="upload-form" action="http://localhost:8000" method="post" enctype="multipart/form-data">
+      <label for="myfile">Select a file:</label>
+      <input id="file" type="file" name="myfile"/>
+      <button id="submit" type="submit">upload...</button>
+    </form>
+  </body>
+  <script>
+    const form = document.getElementById('upload-form')
+    const submit = document.getElementById('submit')
+    const file = document.getElementById('file')
+    form.addEventListener('submit', (event) => {
+      event.preventDefault()
+      submit.disabled = "disabled"
+      submit.innerHTML = "starting..."
+
+      // creates form data
+      const formData = new FormData();
+      formData.append(file.name, file.files[0]);
+
+      // send request
+      const request = new XMLHttpRequest();
+      const fileSize = file
+        .files[0]
+        .size;
+      request
+        .upload
+        .addEventListener('progress', function (e) {
+          if (e.loaded <= fileSize) {
+            const percent = Math.round(e.loaded / fileSize * 100);
+            console.log(`Uploading... ${percent}%`)
+            submit.innerHTML = `${percent}%`
+          }
+
+          if (e.loaded == e.total) {
+            console.log(`Completed!`)
+            submit.innerHTML = 'DONE!'
+          }
+        });
+      request.open("POST", "http://localhost:8000/");
+      request.send(formData);
+    })
+  </script>
+</html>

@@ -9,12 +9,13 @@ import { join } from 'desm'
 
 const server = createServer((req, res) => {
   // ADDS support for CORS to simplify interactions with the frontend.
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Request-Method', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET')
-  res.setHeader('Access-Control-Allow-Headers', '*')
+  const headers = {
+    'Access-Control-Allow-Origin': req.headers.origin || '*',
+    'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
+    'Access-Control-Max-Age': 2592000, // 30 days
+  }
   if (req.method === 'OPTIONS') {
-    res.writeHead(200)
+    res.writeHead(200, headers)
     return res.end()
   }
   // END CORS
@@ -22,8 +23,8 @@ const server = createServer((req, res) => {
   // You can create a new formidable instance and configure it.
   // In this case we are limiting every file to be a max of 10 MB.
   const form = formidable({
-    maxFileSize: 1024 * 1024 * 10, // 10 MB
-    maxFieldsSize: 1024 * 1024 * 10, // 10 MB
+    maxFileSize: 1024 * 1024 * 100, // 100 MB
+    maxFieldsSize: 1024 * 1024 * 100, // 100 MB
     hash: 'md5'
   })
 
@@ -34,8 +35,8 @@ const server = createServer((req, res) => {
     // handle possible errors in parsing the received data
     // including validation rules
     if (err) {
-      console.error(err)
-      res.writeHead(400)
+      console.error(`File upload failed.`, err)
+      res.writeHead(400, headers)
       return res.end(JSON.stringify({ error: err.message }))
     }
 
@@ -57,7 +58,7 @@ const server = createServer((req, res) => {
     console.log({ fields, files })
 
     // Sends a successful response to the client
-    res.writeHead(200, { 'content-type': 'application/json' })
+    res.writeHead(200, { ...headers, 'content-type': 'application/json' })
     res.end(JSON.stringify({ message: 'YAY! All data received and stored, thanks!' }))
   })
 })
