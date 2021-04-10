@@ -23,8 +23,8 @@ const server = createServer((req, res) => {
   // You can create a new formidable instance and configure it.
   // In this case we are limiting every file to be a max of 10 MB.
   const form = formidable({
-    maxFileSize: 1024 * 1024 * 100, // 100 MB
-    maxFieldsSize: 1024 * 1024 * 100, // 100 MB
+    maxFileSize: 1024 * 1024 * 1000, // 100 MB
+    maxFieldsSize: 1024 * 1024 * 1000, // 100 MB
     hash: 'md5'
   })
 
