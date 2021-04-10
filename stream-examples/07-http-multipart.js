@@ -59,7 +59,7 @@ const server = createServer((req, res) => {
 
     // Sends a successful response to the client
     res.writeHead(200, { ...headers, 'content-type': 'application/json' })
-    res.end(JSON.stringify({ message: 'YAY! All data received and stored, thanks!' }))
+    res.end(JSON.stringify({ text: 'YAY! All data received and stored, thanks!' }))
   })
 })
 
