@@ -2,8 +2,15 @@ import React  from 'react';
 import { useUploader } from '../hooks/useUploader';
 import './MFUploader.css';
 
-export const MFUploader: React.FC = () => {
-  const { text, progress, submitHandler, registerInput } = useUploader()
+interface MFUploader {
+  onStart: () => void;
+  onProgress: (progress: number) => void;
+  onComplete: () => void;
+}
+export const MFUploader: React.FC<MFUploader> = ({ onStart, onProgress, onComplete }) => {
+  const {
+    text, progress, submitHandler, registerInput
+  } = useUploader(onStart, onProgress, onComplete)
 
   return <>
     <form>

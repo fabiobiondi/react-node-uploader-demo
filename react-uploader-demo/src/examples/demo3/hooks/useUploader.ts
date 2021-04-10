@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 const DEFAULT_MSG = 'SELECT A FILE...';
 const STARTING = 'starting...';
 
-export function useUploader() {
+export function useUploader(onStart: any, onProgress: any, onComplete: any) {
   const [text, setText] = useState<string>(DEFAULT_MSG);
   const [progress, setProgress] = useState<number>(0);
   const fileInput = useRef<HTMLInputElement | null>(null);
@@ -11,6 +11,7 @@ export function useUploader() {
   function onSubmitHandler(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
     setProgress(0);
+    onStart();
 
     const file = fileInput.current;
     setText(STARTING);
@@ -27,12 +28,13 @@ export function useUploader() {
           const percent = Math.round(e.loaded / fileSize * 100);
           setProgress(percent);
           setText(`${percent}%`)
-          console.log(percent)
+          onProgress(percent);
         }
 
         if (e.loaded === e.total) {
           setText(DEFAULT_MSG);
           setProgress(0);
+          onComplete();
         }
       });
       request.open("POST", "http://localhost:8000/");
