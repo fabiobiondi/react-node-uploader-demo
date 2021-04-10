@@ -5,7 +5,7 @@ const STARTING = 'starting...';
 
 export function useUploader() {
   const [text, setText] = useState<string>(DEFAULT_MSG);
-  const [progress, setProgress] = useState<number>(50);
+  const [progress, setProgress] = useState<number>(0);
   const fileInput = useRef<HTMLInputElement | null>(null);
 
   function onSubmitHandler(event: React.ChangeEvent<HTMLInputElement>) {
