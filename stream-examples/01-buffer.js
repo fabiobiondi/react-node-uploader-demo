@@ -30,4 +30,4 @@ console.log(bufferFromFile) // <Buffer 7b 0a 20 20 22 6e 61 6d 65 22 3a 20 22 72
 
 // What if you try to read a very big file into a buffer?
 // const explodingBuffer = readFileSync(join(import.meta.url, 'the-matrix.mp4')) // throws ERR_FS_FILE_TOO_LARGE!
-// HOT TIP: if you need to create a big file, try `dd if=/dev/random of=the-matrix.mp4 bs=1 count=0 seek=3g`
+// HOT TIP: if you need to create a big file (~3Gb), try `dd if=/dev/urandom of=the-matrix.mp4 bs=1024 count=3000`
